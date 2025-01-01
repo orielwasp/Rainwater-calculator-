@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rainwater Harvesting Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f2f2f2;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Rainwater Harvesting Calculator</h1>
+        <div class="form-group">
+            <label for="rainfall">Average Rainfall (mm/month):</label>
+            <input type="number" id="rainfall" placeholder="Enter average rainfall">
+        </div>
+        <div class="form-group">
+            <label for="roofArea">Roof Surface Area (m²):</label>
+            <input type="number" id="roofArea" placeholder="Enter roof surface area">
+        </div>
+        <div class="form-group">
+            <label for="tankVolume">Tank Volume (liters):</label>
+            <input type="number" id="tankVolume" placeholder="Enter tank volume">
+        </div>
+        <div class="form-group">
+            <label for="desiredVolume">Desired Volume of Water (liters):</label>
+            <input type="number" id="desiredVolume" placeholder="Enter desired volume of water">
+        </div>
+        <button onclick="calculate()">Calculate</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        function calculate() {
+            const rainfall = parseFloat(document.getElementById('rainfall').value);
+            const roofArea = parseFloat(document.getElementById('roofArea').value);
+            const tankVolume = parseFloat(document.getElementById('tankVolume').value);
+            const desiredVolume = parseFloat(document.getElementById('desiredVolume').value);
+
+            if (isNaN(rainfall) || isNaN(roofArea) || isNaN(tankVolume) || isNaN(desiredVolume)) {
+                alert("Please enter valid numbers in all fields.");
+                return;
+            }
+
+            // Rainfall in mm to meters
+            const rainfallInMeters = rainfall / 1000;
+            
+            // Calculate volume of water collected from roof per month
+            const collectedWater = rainfallInMeters * roofArea * 1000; // in liters
+            
+            // Check if collected water can fill the tank
+            const canFillTank = collectedWater >= tankVolume ? "Yes" : "No";
+            
+            // Calculate required roof area to collect the desired volume of water
+            const requiredRoofArea = desiredVolume / (rainfallInMeters * 1000); // in m²
+
+            const result = `
+                <p>Can the predicted rainfall fill the tank? <strong>${canFillTank}</strong></p>
+                <p>Monthly water collected from the roof: <strong>${collectedWater.toFixed(2)} liters</strong></p>
+                <p>Required roof area to collect ${desiredVolume} liters: <strong>${requiredRoofArea.toFixed(2)} m²</strong></p>
+            `;
+            document.getElementById('result').innerHTML = result;
+        }
+    </script>
+</body>
+</html>
